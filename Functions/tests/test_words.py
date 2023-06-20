@@ -58,3 +58,24 @@ def test_letters_from_one_word_to_dict_all_case(word, expected_letter_dict):
     letter_dict = words.letters_from_one_word_to_dict(word)
     # then
     assert expected_letter_dict == letter_dict
+
+
+@pytest.mark.parametrize(
+    ["dict1", "dict2", "expected_dict"] ,
+    [
+          ({}, {}, {}),
+          ({}, {"a":1, "b":2}, {"a":1, "b":2}),
+          ({"a":1, "b":2}, {}, {"a":1, "b":2}),
+          ({"a":1, "b":2}, {"c":4}, {"a":1, "b":2, "c":4}),
+          ({"a":1, "b":2}, {"b":4}, {"a":1, "b":6}),
+          ({"a":1, "b":2}, {"a": 5, "c":4}, {"a": 6, "b":2, "c":4}),
+    ],
+    ids=["empty dicts", "empty dict 1", "empty dict 2", 
+         "new letter", "letter already present", "letters new and already present"]
+)
+def test_update_dict_letters(dict1, dict2, expected_dict):
+    # when
+    letters = words.update_dict_letters(dict1, dict2)
+    # then
+    assert expected_dict == letters
+    assert letters is dict1
