@@ -10,6 +10,21 @@ def test_letters_from_one_word_to_dict():
     # then
     assert expected_letter_dict == letter_dict
 
+@pytest.fixture
+def word_toulouse():
+    return "Toulouse"
+
+@pytest.fixture
+def letters_toulouse_cs():
+    return {"T":1, "o":2, "u":2, "l":1, "s":1, "e":1}
+
+def test_letters_from_one_word_to_dict_fixture(word_toulouse, letters_toulouse_cs):
+    # given: cf args    
+    # when
+    letter_dict = words.letters_from_one_word_to_dict(word_toulouse)
+    # then
+    assert letters_toulouse_cs == letter_dict
+
 
 @pytest.mark.parametrize(
         # nom des parametres à injecter
