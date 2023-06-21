@@ -3,11 +3,11 @@ import geometry as geo
 
 @pytest.fixture
 def pointA():
-    return geo.Point("A", 2.5, 3.25)
+    return geo.Point(name="A", x=2.5, y=3.25)
 
 @pytest.fixture
 def pointB():
-    return geo.Point("B", 1.5, 1.75)
+    return geo.Point(name="B", x=1.5, y=1.75)
 
 @pytest.fixture
 def tupleXY():

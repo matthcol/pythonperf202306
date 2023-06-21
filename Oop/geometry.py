@@ -1,41 +1,20 @@
 from  functools import total_ordering
+from dataclasses import dataclass
 
-# NB: engagement du concepteur de la classe
-# à avoir un == et < compatible
-@total_ordering
+# See also: pydantic (external dependency better than @dataclass)
+
+# default settings: init=True, match_args=True, eq=True, order=False, repr=True
+@dataclass(slots=True, order=True, kw_only=True, unsafe_hash=True)
 class Point:
 
-    # freeze attribute list (dynamic add impossible)
-    __slots__ = ["_name","x","y"]
-    
-    # for pattern matching by position
-    __match_args__ = ("name","x","y")
-    
-    def __init__(self, name=None, x=0.0, y=0.0):
-        self._name = name
-        self.x = x
-        self.y = y
+    x: int|float = 0
+    y: int|float = 0
+    name: str|None = None
 
-    @property
-    def name(self):
-        """name of the point (optional)"""
-        return self._name
+    # def __delattr__(self,name):
+    #     raise AttributeError(f"property '{name}' of 'Point' object has no deleter")
     
-    @name.setter
-    def name(self, value):
-        self._name = value
-
-    # NB: deleter forbidden
-
-    # NB: __repr__ overrides both __str__ and __repr__ 
-    # if __str__ is not overriden
-    def __repr__(self):
-        return "Point<name={},x={},y={}>".format(
-            self.name,
-            self.x,
-            self.y
-        )
-    
+    # str different from repr (default)
     def __str__(self):
         return "{}({},{})".format(
             "?" if self.name is None else self.name,
@@ -43,25 +22,6 @@ class Point:
             self.y
         )
     
-    # override ==, !=, hash
-    def __eq__(self, other):
-        if self is other:
-            return True 
-        if isinstance(other, Point):
-            return (self.name, self.x, self.y) == \
-                (other.name, other.x, other.y)
-        return NotImplemented
-    
-    # NB: p1 == p2 => hash(p1) == hash(p2)
-    def __hash__(self):
-        return hash((self.name, self.x, self.y))
-
-    # total_ordering: <, <=, >, >=
-    def __lt__(self, other):
-        if isinstance(other, Point):
-            return (self.x, self.y, self.name) < \
-                (other.x, other.y, other.name)
-        return NotImplemented
     
     # override + (__add__/__radd__)
     def __add__(self, other):

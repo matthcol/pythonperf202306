@@ -4,9 +4,9 @@ import geometry as geo
 @pytest.mark.parametrize(
     ["p1","p2"],
     [
-        (geo.Point("A",2.5,3.5), geo.Point("B",3.5,3.5)), 
-        (geo.Point("A",2.5,3.5), geo.Point("B",2.5,4.5)),
-        (geo.Point("A",2.5,3.5), geo.Point("B",2.5,3.5)),
+        (geo.Point(name="A",x=2.5,y=3.5), geo.Point(name="B",x=3.5,y=3.5)), 
+        (geo.Point(name="A",x=2.5,y=3.5), geo.Point(name="B",x=2.5,y=4.5)),
+        (geo.Point(name="A",x=2.5,y=3.5), geo.Point(name="B",x=2.5,y=3.5)),
     ],
     ids=[
         "x1 < x2",
@@ -24,10 +24,10 @@ def test_lt_ok(p1: geo.Point, p2: geo.Point):
 @pytest.mark.parametrize(
     ["p1","p2"],
     [
-        (geo.Point("A",2.5,3.5), geo.Point("B",1.5,3.5)), 
-        (geo.Point("A",2.5,3.5), geo.Point("B",2.5,2.5)),
-        (geo.Point("A",2.5,3.5), geo.Point("A",2.5,3.5)),
-        (geo.Point("Z",2.5,3.5), geo.Point("A",2.5,3.5)),
+        (geo.Point(name="A",x=2.5,y=3.5), geo.Point(name="B",x=1.5,y=3.5)), 
+        (geo.Point(name="A",x=2.5,y=3.5), geo.Point(name="B",x=2.5,y=2.5)),
+        (geo.Point(name="A",x=2.5,y=3.5), geo.Point(name="A",x=2.5,y=3.5)),
+        (geo.Point(name="Z",x=2.5,y=3.5), geo.Point(name="A",x=2.5,y=3.5)),
     ],
     ids=[
         "x1 > x2",
