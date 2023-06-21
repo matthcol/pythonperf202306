@@ -5,13 +5,27 @@ from  functools import total_ordering
 @total_ordering
 class Point:
 
+    # freeze attribute list (dynamic add impossible)
+    __slots__ = ["_name","x","y"]
+    
     # for pattern matching by position
     __match_args__ = ("name","x","y")
     
     def __init__(self, name=None, x=0.0, y=0.0):
-        self.name = name
+        self._name = name
         self.x = x
         self.y = y
+
+    @property
+    def name(self):
+        """name of the point (optional)"""
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    # NB: deleter forbidden
 
     # NB: __repr__ overrides both __str__ and __repr__ 
     # if __str__ is not overriden
