@@ -59,3 +59,31 @@ def test_eq_same():
     p = geo.Point("A", 1.25, 3.5)
     assert p == p
     assert not(p != p)
+
+def test_eq_inContainerList():
+    p = geo.Point("A", 1.25, 3.5)
+    container = [
+        geo.Point("C", 1.25, 3.5),
+        geo.Point("A", 1.25, 3.5),
+        geo.Point("B", 1.25, 3.5)
+    ]
+    assert p in container
+
+def test_eq_inContainerSet():
+    p = geo.Point("A", 1.25, 3.5)
+    container = {
+        geo.Point("C", 1.25, 3.5),
+        geo.Point("A", 1.25, 3.5),
+        geo.Point("B", 1.25, 3.5)
+    }
+    assert p in container
+
+def test_eq_inContainerDict():
+    p = geo.Point("A", 1.25, 3.5)
+    container = {
+        geo.Point("C", 1.25, 3.5): "Good",
+        geo.Point("A", 1.25, 3.5): "Average",
+        geo.Point("B", 1.25, 3.5): "Bad"
+    }
+    assert p in container
+
