@@ -17,6 +17,7 @@ def test_setterName(pointA):
 # for deletter choose between the 3 following strategies
 
 # 1 - accept del
+@pytest.mark.xfail
 def test_deleteName_ok(pointA):
     del pointA.name # ok
     # now point has no attribute name anymore
