@@ -4,6 +4,9 @@ from  functools import total_ordering
 # à avoir un == et < compatible
 @total_ordering
 class Point:
+
+    # for pattern matching by position
+    __match_args__ = ("name","x","y")
     
     def __init__(self, name=None, x=0.0, y=0.0):
         self.name = name
@@ -39,11 +42,55 @@ class Point:
     def __hash__(self):
         return hash((self.name, self.x, self.y))
 
-    # TODO: <, <=, >, >=
+    # total_ordering: <, <=, >, >=
     def __lt__(self, other):
         if isinstance(other, Point):
             return (self.x, self.y, self.name) < \
                 (other.x, other.y, other.name)
         return NotImplemented
     
-    # TODO: + , +=
+    # override + (__add__/__radd__)
+    def __add__(self, other):
+        match other:
+            case int(v) | float(v):
+                return Point(x=self.x + v, y=self.y + v)
+            case Point(x=x, y=y):
+                return Point(x=self.x + x, y=self.y + y)
+            case (x, y):
+                return Point(x=self.x + x, y=self.y + y)
+            case (str,x, y):
+                return Point(x=self.x + x, y=self.y + y)
+            case {"x":x, "y":y}:
+                return Point(x=self.x + x, y=self.y + y)
+            case {"x":x}:
+                return Point(x=self.x + x, y=self.y)
+            case {"y":y}:
+                return Point(x=self.x, y=self.y + y)
+            case _:
+                return NotImplemented
+
+    # override += (__iadd__)
+    def __iadd__(self, other):
+        match other:
+            case int(v) | float(v):
+                self.x += v
+                self.y += v
+            case Point(x=x, y=y):
+                self.x += x
+                self.y += y
+            case (x, y):
+                self.x += x
+                self.y += y
+            case (str,x, y):
+                self.x += x
+                self.y += y
+            case {"x":x, "y":y}:
+                self.x += x
+                self.y += y
+            case {"x":x}:
+                self.x += x            
+            case {"y":y}:
+                self.y += y
+            case _:
+                return NotImplemented
+        return self

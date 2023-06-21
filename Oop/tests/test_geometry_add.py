@@ -116,10 +116,63 @@ def test_iadd_point(pointA, pointB):
     assert pointA.x == 4.0
     assert pointA.y == 5.0
     
-def test_iadd_tuple(pointA, tupleXY):
+def test_iadd_tupleXY(pointA, tupleXY):
     pointA += tupleXY
     assert pointA.x == 4.0
     assert pointA.y == 5.0
+
+def test_iadd_tupleNXY(pointA, tupleNXY):
+    pointA += tupleNXY
+    assert pointA.x == 4.0
+    assert pointA.y == 5.0
+
+def test_iadd_listXY(pointA, listXY):
+    pointA += listXY
+    assert pointA.x == 4.0
+    assert pointA.y == 5.0
+
+def test_iadd_listNXY(pointA, listNXY):
+    pointA += listNXY
+    assert pointA.x == 4.0
+    assert pointA.y == 5.0
+
+def test_iadd_dictX(pointA, dictX):
+    pointA += dictX
+    assert pointA.x == 4.0
+    assert pointA.y == 3.25 # unchanged
+
+def test_iadd_dictY(pointA, dictY):
+    pointA += dictY
+    assert pointA.x == 2.5 # unchanged
+    assert pointA.y == 5
+
+def test_iadd_dictXY(pointA, dictXY):
+    pointA += dictXY
+    assert pointA.x == 4.0
+    assert pointA.y == 5.0
+
+def test_add_dictNXY(pointA, dictNXY):
+    pointA += dictNXY
+    assert pointA.x == 4.0
+    assert pointA.y == 5.0
+
+
+@pytest.mark.parametrize(
+        "scalar,expX,expY",
+        [
+            (2, 4.5, 5.25),
+            (2.25, 4.75, 5.5),
+            (True, 3.5, 4.25), 
+            (False, 2.5, 3.25),
+        ],
+        ids=["int","float",
+             "bool true","bool false",
+        ]
+)
+def test_iadd_scalar(pointA, scalar, expX, expY):
+    pointA += scalar
+    assert pointA.x == expX
+    assert pointA.y == expY
 
 notAddableDataList = [
     "A", # cannot add str (for now)
