@@ -68,3 +68,6 @@ class Point:
             case _:
                 return NotImplemented
         return self
+    
+    def dummy(self):
+        print("Dummy as a point")
