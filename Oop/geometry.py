@@ -11,7 +11,7 @@ class Point:
     # for pattern matching by position
     __match_args__ = ("name","x","y")
     
-    def __init__(self, name=None, x=0.0, y=0.0):
+    def __init__(self, name=None, x=0.0, y=0.0, **kwargs):
         self._name = name
         self.x = x
         self.y = y
@@ -108,3 +108,13 @@ class Point:
             case _:
                 return NotImplemented
         return self
+    
+    @staticmethod
+    def of(x, y, name=None):
+        return Point(x=x, y=y, name=name)
+    
+    @classmethod
+    def fromCoords(cls, x, y, name=None):
+        return cls(x=x, y=y, name=name)
+    
+    # TODO: from polar coordinates
