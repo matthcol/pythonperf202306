@@ -1,5 +1,6 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from time import sleep
+from datetime import datetime
 
 import numpy as np
 
@@ -40,12 +41,29 @@ def run_n_jobs(w,n):
     """
     values = np.random.normal(10, 4, n)
     with ThreadPoolExecutor(w) as pool:
+        # NB: attention à la lazy evaluation !!!
+        
+        # 1st round
         # submit n computations
+        futures = [ pool.submit(f, x, 1 + (i % 5)) for i, x in enumerate(values, start=1) ]
+        print(futures)
+        # retrieve n results (barrière de synchronisation)
+        results = [ future.result() for future in futures ]
+        print(results)
 
-        # retrieve n results
-        results = None
-    print(results)
-
+        # 2nd round
+        results2 = np.empty(n) 
+        futuresDict = { pool.submit(f, x, 5 - (i % 5)): i for i, x in enumerate(values) }
+        for future in as_completed(futuresDict):
+            indexFuture = futuresDict[future]
+            res = future.result()
+            print(f"Received result #{indexFuture}:", res)
+            # todo another task on this task
+            results2[indexFuture] = res
+        print(results2)
 if __name__ == '__main__':
-    run_2_jobs()
-    run_n_jobs(w=4, n=20)
+    # run_2_jobs()
+    t1 = datetime.now()
+    run_n_jobs(w=4, n=8)
+    t2 = datetime.now()
+    print("Time elapsed:", t2-t1)
