@@ -11,8 +11,8 @@ class Point:
     y: int|float = 0
     name: str|None = None
 
-    # def __delattr__(self,name):
-    #     raise AttributeError(f"property '{name}' of 'Point' object has no deleter")
+    def __delattr__(self,name):
+        raise AttributeError(f"property '{name}' of 'Point' object has no deleter")
     
     # str different from repr (default)
     def __str__(self):
